@@ -1,0 +1,64 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-image: url("/img/WhatsApp Image 2023-12-10 at 10.40.46 AM.jpeg");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+body div.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 2rem;
+}
+body div.container div.header {
+  margin: 2rem;
+  gap: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+body div.container div.header input {
+  background-color: white;
+}
+body div.container div.header h1 {
+  color: rgb(187, 1, 1);
+  font-size: 2.5rem;
+  font-weight: bolder;
+}
+body div.container div.header button {
+  margin-bottom: 1rem;
+  background-image: linear-gradient(0deg, red, white);
+  min-height: 4rem;
+  min-width: 4rem;
+  border-radius: 30%;
+}
+body div.container div.results {
+  background-color: rgba(173, 216, 230, 0.7);
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 50px;
+}
+body div.container div.results img {
+  width: 150px;
+  height: 150px;
+}
+body div.container div.results h4,
+body div.container div.results ul,
+body div.container div.results li {
+  align-self: flex-start;
+  color: rgb(33, 32, 32);
+  list-style-type: none;
+}/*# sourceMappingURL=style.css.map */
