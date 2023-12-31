@@ -1,24 +1,55 @@
-document.getElementById('searchButton').addEventListener('click', searchPokemon)
+document.addEventListener('DOMContentLoaded', loadPokemonNames);
+document.getElementById('searchButton').addEventListener('click', searchPokemon);
 
-let urlBase = 'https://pokeapi.co/api/v2/pokemon/'
-let resultContainer = document.getElementById('results')
+let urlBase = 'https://pokeapi.co/api/v2/pokemon/';
+let resultContainer = document.getElementById('results');
+let pokemonSelect = document.getElementById('pokemonSelect');
+
+
+function loadPokemonNames() {
+    pokemonSelect.innerHTML = '<option value="">Cargando...</option>';
+
+    let limit = 2000;
+    fetch(`${urlBase}?limit=${limit}`)
+        .then(response => response.json())
+        .then(data => {
+            // Ordena los resultados alfabéticamente por el nombre del Pokémon
+            const sortedPokemon = data.results.sort((a, b) => a.name.localeCompare(b.name));
+
+            pokemonSelect.innerHTML = '<option value="">Selecciona un Pokémon</option>';
+            sortedPokemon.forEach(pokemon => {
+                const option = document.createElement('option');
+                option.value = pokemon.name;
+                option.textContent = pokemon.name;
+                pokemonSelect.appendChild(option);
+            });
+        })
+        .catch(error => {
+            pokemonSelect.innerHTML = '<option value="">Error al cargar</option>';
+            console.error('Error al cargar los nombres de Pokémon:', error);
+        });
+}
+
+
+
 
 function searchPokemon() {
-    resultContainer.innerHTML = 'Buscando Pokemon...'
-    let searchInput = document.getElementById('searchInput').value.trim().toLowerCase()
+    resultContainer.innerHTML = 'Buscando Pokemon...';
+    let selectedPokemon = pokemonSelect.value;
 
-    if (searchInput === '') {
-        resultContainer.innerHTML = 'No se ha ingresado un nombre de Pokémon. Intente nuevamente.'
-        return
+    if (selectedPokemon === '') {
+        resultContainer.innerHTML = 'No se ha seleccionado un Pokémon. Intente nuevamente.';
+        return;
     }
 
-    fetch(`${urlBase}${searchInput}`)
+    fetch(`${urlBase}${selectedPokemon}`)
         .then(response => response.json())
         .then(response => displayPokemon(response))
         .catch(error => {
-            resultContainer.innerHTML = 'No se ha encontrado el Pokémon. Intente nuevamente.'
-        })
+            resultContainer.innerHTML = 'No se ha encontrado el Pokémon. Intente nuevamente.';
+        });
 }
+
 
 function displayPokemon(response) {
     resultContainer.innerHTML = '';
@@ -34,6 +65,26 @@ function displayPokemon(response) {
     const weight = response.weight;
     const id = response.id;
     const heldItems = response.held_items;
+
+    // // Traducir y mostrar los tipos de Pokémon
+    // if (types && types.length > 0) {
+    //     const typesText = types.map(typeInfo => typeInfo.type.name).join(', ');
+    //     translateText(typesText, 'en', 'es', translatedTypes => {
+    //         const typesHeading = document.createElement('h4');
+    //         typesHeading.textContent = 'Tipos del Pokemon: ' + translatedTypes;
+    //         resultContainer.appendChild(typesHeading);
+    //     });
+    // }
+
+    // // Traducir y mostrar habilidades del Pokémon
+    // if (abilities && abilities.length > 0) {
+    //     const abilitiesText = abilities.map(ability => ability.ability.name).join(', ');
+    //     translateText(abilitiesText, 'en', 'es', translatedAbilities => {
+    //         const abilitiesHeading = document.createElement('h4');
+    //         abilitiesHeading.textContent = 'Habilidades del Pokemon: ' + translatedAbilities;
+    //         resultContainer.appendChild(abilitiesHeading);
+    //     });
+    // }
 
     if (sprites) {
         // Recorre todas las propiedades de sprites
@@ -148,3 +199,34 @@ function displayPokemon(response) {
         resultContainer.innerHTML = 'No se encontraron imágenes para el Pokémon.';
     }
 }
+
+// function translateText(text, sourceLang, targetLang, callback) {
+//     var url = "https://text-translator2.p.rapidapi.com/translate";
+//     var data = {
+//         text: text,
+//         target_language: targetLang,
+//         source_language: sourceLang
+//     };
+
+//     fetch(url, {
+//         method: "POST",
+//         headers: {
+//             "content-type": "application/x-www-form-urlencoded",
+//             "X-RapidAPI-Key": "a71e103d4bmsh2d23398c391c2ddp1690cajsn1bc2aaf2288a",
+//             "X-RapidAPI-Host": "text-translator2.p.rapidapi.com"
+//         },
+//         body: new URLSearchParams(data)
+//     })
+//         .then(response => response.json())
+//         .then(data => {
+//             if (data.status === "success" && data.data.translatedText) {
+//                 callback(data.data.translatedText);
+//             } else {
+//                 callback('No se encontró traducción');
+//             }
+//         })
+//         .catch(error => {
+//             console.error('Error:', error);
+//             callback('Error al traducir');
+//         });
+// }

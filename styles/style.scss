@@ -4,35 +4,33 @@
     box-sizing: border-box;
 }
 
-
 body {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    background-image: url('/img/WhatsApp\ Image\ 2023-12-10\ at\ 10.40.46\ AM.jpeg');
+    background-image: url('/img/WhatsApp Image 2023-12-10 at 10.40.46 AM.jpeg');
     background-size: cover;
     background-repeat: no-repeat;
 
-
-    div.container {
+    .container {
         display: flex;
         justify-content: center;
         align-items: center;
         flex-direction: column;
         gap: 2rem;
+        padding: 20px;
+        background-color: rgba(255, 255, 255, 0.6);
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 
-        div.header {
+        .header {
             margin: 2rem;
-            gap: 3rem;
+            gap: 1rem;
             display: flex;
             justify-content: center;
             align-items: center;
             flex-direction: column;
-
-            input {
-                background-color: white;
-            }
 
             h1 {
                 color: rgb(187, 1, 1);
@@ -40,40 +38,48 @@ body {
                 font-weight: bolder;
             }
 
-            button {
+            select, button {
+                padding: 0.5rem;
+                border-radius: 5px;
+                border: 1px solid #ccc;
                 margin-bottom: 1rem;
+            }
+
+            button {
                 background-image: linear-gradient(0deg, red, white);
-                min-height: 4rem;
-                min-width: 4rem;
-                border-radius: 30%;
+                min-height: 2.5rem;
+                min-width: 5rem;
+                &:hover {
+                    cursor: pointer;
+                    opacity: 0.9;
+                    background-image: linear-gradient(180deg, red, white);
+                }
+
+                
             }
         }
 
-        div.results {
-            background-color: rgba(173, 216, 230, 0.7);
+        .results {
             display: flex;
-            // justify-content: center;
             align-items: center;
             flex-direction: column;
             gap: 0.5rem;
-            margin-bottom: 50px;
+            padding: 1rem;
+            border-radius: 5px;
 
             img {
                 width: 150px;
                 height: 150px;
+                border-radius: 5px;
+                box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
             }
 
-            h4,
-            ul,
-            li {
+            h4, ul, li {
                 align-self: flex-start;
                 color: rgb(33, 32, 32);
                 list-style-type: none;
             }
 
         }
-
     }
-
-
 }

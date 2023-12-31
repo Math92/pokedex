@@ -13,7 +13,11 @@
     <div class="container">
         <div class="header">
             <h1>POKEDEX</h1>
-            <input type="text" id="searchInput" placeholder="Ingresa un pokemon">
+            <!-- Elemento select para los nombres de Pokémon -->
+            <select id="pokemonSelect">
+                <option value="">Selecciona un Pokémon</option>
+                <!-- Las opciones se llenarán dinámicamente -->
+            </select>
             <button id="searchButton">Buscar</button>
         </div>
         <div id="results" class="results"></div>
