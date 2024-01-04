@@ -66,25 +66,6 @@ function displayPokemon(response) {
     const id = response.id;
     const heldItems = response.held_items;
 
-    // // Traducir y mostrar los tipos de Pokémon
-    // if (types && types.length > 0) {
-    //     const typesText = types.map(typeInfo => typeInfo.type.name).join(', ');
-    //     translateText(typesText, 'en', 'es', translatedTypes => {
-    //         const typesHeading = document.createElement('h4');
-    //         typesHeading.textContent = 'Tipos del Pokemon: ' + translatedTypes;
-    //         resultContainer.appendChild(typesHeading);
-    //     });
-    // }
-
-    // // Traducir y mostrar habilidades del Pokémon
-    // if (abilities && abilities.length > 0) {
-    //     const abilitiesText = abilities.map(ability => ability.ability.name).join(', ');
-    //     translateText(abilitiesText, 'en', 'es', translatedAbilities => {
-    //         const abilitiesHeading = document.createElement('h4');
-    //         abilitiesHeading.textContent = 'Habilidades del Pokemon: ' + translatedAbilities;
-    //         resultContainer.appendChild(abilitiesHeading);
-    //     });
-    // }
 
     if (sprites) {
         // Recorre todas las propiedades de sprites
@@ -199,34 +180,3 @@ function displayPokemon(response) {
         resultContainer.innerHTML = 'No se encontraron imágenes para el Pokémon.';
     }
 }
-
-// function translateText(text, sourceLang, targetLang, callback) {
-//     var url = "https://text-translator2.p.rapidapi.com/translate";
-//     var data = {
-//         text: text,
-//         target_language: targetLang,
-//         source_language: sourceLang
-//     };
-
-//     fetch(url, {
-//         method: "POST",
-//         headers: {
-//             "content-type": "application/x-www-form-urlencoded",
-//             "X-RapidAPI-Key": "a71e103d4bmsh2d23398c391c2ddp1690cajsn1bc2aaf2288a",
-//             "X-RapidAPI-Host": "text-translator2.p.rapidapi.com"
-//         },
-//         body: new URLSearchParams(data)
-//     })
-//         .then(response => response.json())
-//         .then(data => {
-//             if (data.status === "success" && data.data.translatedText) {
-//                 callback(data.data.translatedText);
-//             } else {
-//                 callback('No se encontró traducción');
-//             }
-//         })
-//         .catch(error => {
-//             console.error('Error:', error);
-//             callback('Error al traducir');
-//         });
-// }
