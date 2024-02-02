@@ -54,129 +54,131 @@ function searchPokemon() {
 function displayPokemon(response) {
     resultContainer.innerHTML = '';
 
-    const divPokemon = document.getElementById('results');
-    divPokemon.innerHTML = '';
+    const frontDefault = response.sprites.front_default;
+    const dreamWorld = response.sprites.other['dream_world'].front_default;
 
-    const sprites = response.sprites;
+    const id = response.id;
     const types = response.types;
-    const abilities = response.abilities; // Nuevas habilidades
+    const abilities = response.abilities;
     const stats = response.stats;
     const height = response.height;
     const weight = response.weight;
-    const id = response.id;
     const heldItems = response.held_items;
 
-
-    if (sprites) {
-        // Recorre todas las propiedades de sprites
-        for (const prop in sprites) {
-            if (typeof sprites[prop] === 'string') {
-                const imgPokemon = document.createElement('img');
-                imgPokemon.src = sprites[prop];
-                resultContainer.appendChild(imgPokemon);
-            } else if (prop === 'other') {
-                // Si la propiedad es 'other', recorre las imágenes dentro de 'other'
-                const otherSprites = sprites.other;
-                for (const otherProp in otherSprites) {
-                    if (typeof otherSprites[otherProp] === 'object' && otherSprites[otherProp].front_default) {
-                        const imgOtherPokemon = document.createElement('img');
-                        imgOtherPokemon.src = otherSprites[otherProp].front_default;
-                        resultContainer.appendChild(imgOtherPokemon);
-                    }
-                }
-            }
+    // Función auxiliar para agregar imágenes
+    const addImageToContainer = (imageUrl, altText) => {
+        if (imageUrl) {
+            const img = document.createElement('img');
+            img.src = imageUrl;
+            img.alt = altText;
+            resultContainer.appendChild(img);
         }
+    };
 
-        if (id) {
-            const idHeading = document.createElement('h4');
-            idHeading.textContent = 'ID del Pokemon:' + id;
-            resultContainer.appendChild(idHeading);
-        }
+    // Muestra solo el front_default de la sección "showdown"
+    const showdownFrontDefault = response.sprites.other['showdown'] ? response.sprites.other['showdown']['front_default'] : null;
+    addImageToContainer(showdownFrontDefault, "Showdown Front Default");
 
-        // Agrega un h4 para los Tipos del Pokemon
-        if (types && types.length > 0) {
-            const typesHeading = document.createElement('h4');
-            typesHeading.textContent = 'Tipos del Pokemon: ';
+    // Muestra la imagen frontal
+    addImageToContainer(frontDefault, "Frontal");
 
-            const typesList = document.createElement('ul');
-            types.forEach(typeInfo => {
-                const typeItem = document.createElement('li');
-                typeItem.textContent = typeInfo.type.name;
-                typesList.appendChild(typeItem);
-            });
+    // Muestra la imagen de Dream World
+    addImageToContainer(dreamWorld, "Dream World");
 
-            typesHeading.appendChild(typesList);
-            resultContainer.appendChild(typesHeading);
-        }
 
-        // Agrega un h4 para las Habilidades del Pokemon
-        if (abilities && abilities.length > 0) {
-            const abilitiesHeading = document.createElement('h4');
-            abilitiesHeading.textContent = 'Habilidades del Pokemon: ';
-            resultContainer.appendChild(abilitiesHeading);
 
-            const abilitiesList = document.createElement('ul');
-            abilities.forEach(ability => {
-                const abilityItem = document.createElement('li');
-                abilityItem.textContent = ability.ability.name;
-                abilitiesList.appendChild(abilityItem);
-            });
+    // Muestra la ID del Pokémon
+    if (id) {
+        const idHeading = document.createElement('h4');
+        idHeading.textContent = 'ID del Pokémon: ' + id;
+        resultContainer.appendChild(idHeading);
+    }
 
-            resultContainer.appendChild(abilitiesList);
-        }
+    // Muestra los tipos del Pokémon
+    if (types && types.length > 0) {
+        const typesHeading = document.createElement('h4');
+        typesHeading.textContent = 'Tipos del Pokémon: ';
 
-        // Agrega un h4 para las estadísticas del Pokemon
-        if (stats && stats.length > 0) {
-            const statsHeading = document.createElement('h4');
-            statsHeading.textContent = 'Estadísticas del Pokemon: ';
-            resultContainer.appendChild(statsHeading);
+        const typesList = document.createElement('ul');
+        types.forEach(typeInfo => {
+            const typeItem = document.createElement('li');
+            typeItem.textContent = typeInfo.type.name;
+            typesList.appendChild(typeItem);
+        });
 
-            const statsList = document.createElement('ul');
-            stats.forEach(stat => {
-                const statItem = document.createElement('li');
-                statItem.textContent = `${stat.stat.name}: ${stat.base_stat}`;
-                statsList.appendChild(statItem);
-            });
+        typesHeading.appendChild(typesList);
+        resultContainer.appendChild(typesHeading);
+    }
 
-            resultContainer.appendChild(statsList);
-        }
+    // Muestra las habilidades del Pokémon
+    if (abilities && abilities.length > 0) {
+        const abilitiesHeading = document.createElement('h4');
+        abilitiesHeading.textContent = 'Habilidades del Pokémon: ';
+        resultContainer.appendChild(abilitiesHeading);
 
-        // Agrega un h4 para la altura del Pokemon
-        if (height) {
-            const heightHeading = document.createElement('h4');
-            const heightInCm = height * 30.48; // Conversión a centímetros
-            heightHeading.textContent = `Altura del Pokemon: ${heightInCm.toFixed(2)} cm`;
-            resultContainer.appendChild(heightHeading);
-        }
+        const abilitiesList = document.createElement('ul');
+        abilities.forEach(ability => {
+            const abilityItem = document.createElement('li');
+            abilityItem.textContent = ability.ability.name;
+            abilitiesList.appendChild(abilityItem);
+        });
 
-        // Agrega un h4 para el peso del Pokemon
-        if (weight) {
-            const weightHeading = document.createElement('h4');
-            const weightInKg = weight * 0.4535923; // Conversión a kilogramos
-            weightHeading.textContent = `Peso del Pokemon: ${weightInKg.toFixed(2)} kg`;
-            resultContainer.appendChild(weightHeading);
-        }
+        resultContainer.appendChild(abilitiesList);
+    }
 
-        if (resultContainer.children.length === 0) {
-            resultContainer.innerHTML = 'No se encontraron imágenes para el Pokémon.';
-        }
-        // Agrega un h4 para los Artículos del Pokemon
-        if (heldItems && heldItems.length > 0) {
-            const heldItemsHeading = document.createElement('h4');
-            heldItemsHeading.textContent = 'Artículos del Pokemon: ';
-            resultContainer.appendChild(heldItemsHeading);
+    // Muestra las estadísticas del Pokémon
+    if (stats && stats.length > 0) {
+        const statsHeading = document.createElement('h4');
+        statsHeading.textContent = 'Estadísticas del Pokémon: ';
+        resultContainer.appendChild(statsHeading);
 
-            const heldItemsList = document.createElement('ul');
-            heldItems.forEach(heldItem => {
-                const heldItemName = heldItem.item.name;
-                const heldItemListItem = document.createElement('li');
-                heldItemListItem.textContent = heldItemName;
-                heldItemsList.appendChild(heldItemListItem);
-            });
+        const statsList = document.createElement('ul');
+        stats.forEach(stat => {
+            const statItem = document.createElement('li');
+            statItem.textContent = `${stat.stat.name}: ${stat.base_stat}`;
+            statsList.appendChild(statItem);
+        });
 
-            resultContainer.appendChild(heldItemsList);
-        }
-    } else {
-        resultContainer.innerHTML = 'No se encontraron imágenes para el Pokémon.';
+        resultContainer.appendChild(statsList);
+    }
+
+    // Muestra la altura del Pokémon
+    if (height) {
+        const heightHeading = document.createElement('h4');
+        const heightInCm = height * 10; // Conversión de decímetros a centímetros
+        heightHeading.textContent = `Altura del Pokémon: ${heightInCm} cm`;
+        resultContainer.appendChild(heightHeading);
+    }
+
+    // Muestra el peso del Pokémon
+    if (weight) {
+        const weightHeading = document.createElement('h4');
+        const weightInKg = weight / 10; // Conversión de hectogramos a kilogramos
+        weightHeading.textContent = `Peso del Pokémon: ${weightInKg} kg`;
+        resultContainer.appendChild(weightHeading);
+    }
+
+    // Muestra los artículos que lleva el Pokémon
+    if (heldItems && heldItems.length > 0) {
+        const heldItemsHeading = document.createElement('h4');
+        heldItemsHeading.textContent = 'Artículos del Pokémon: ';
+        resultContainer.appendChild(heldItemsHeading);
+
+        const heldItemsList = document.createElement('ul');
+        heldItems.forEach(heldItem => {
+            const heldItemName = heldItem.item.name;
+            const heldItemListItem = document.createElement('li');
+            heldItemListItem.textContent = heldItemName;
+            heldItemsList.appendChild(heldItemListItem);
+        });
+
+        resultContainer.appendChild(heldItemsList);
+    }
+
+    // Verifica si se agregaron imágenes al contenedor
+    if (resultContainer.children.length === 0) {
+        resultContainer.innerHTML = 'No se encontraron imágenes específicas para el Pokémon.';
     }
 }
+
+
