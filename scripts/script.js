@@ -7,7 +7,7 @@ let pokemonSelect = document.getElementById('pokemonSelect');
 
 
 function loadPokemonNames() {
-    pokemonSelect.innerHTML = '<option value="">Cargando...</option>';
+    pokemonSelect.innerHTML = '<option value="">Loading...</option>';
 
     let limit = 2000;
     fetch(`${urlBase}?limit=${limit}`)
@@ -16,7 +16,7 @@ function loadPokemonNames() {
             // Ordena los resultados alfabéticamente por el nombre del Pokémon
             const sortedPokemon = data.results.sort((a, b) => a.name.localeCompare(b.name));
 
-            pokemonSelect.innerHTML = '<option value="">Selecciona un Pokémon</option>';
+            pokemonSelect.innerHTML = '<option value="">Select a Pokemon</option>';
             sortedPokemon.forEach(pokemon => {
                 const option = document.createElement('option');
                 option.value = pokemon.name;
@@ -25,8 +25,8 @@ function loadPokemonNames() {
             });
         })
         .catch(error => {
-            pokemonSelect.innerHTML = '<option value="">Error al cargar</option>';
-            console.error('Error al cargar los nombres de Pokémon:', error);
+            pokemonSelect.innerHTML = '<option value="">Error loading</option>';
+            console.error('Error loading Pokemon names:', error);
         });
 }
 
@@ -34,11 +34,11 @@ function loadPokemonNames() {
 
 
 function searchPokemon() {
-    resultContainer.innerHTML = 'Buscando Pokemon...';
+    resultContainer.innerHTML = 'Looking for Pokemon...';
     let selectedPokemon = pokemonSelect.value;
 
     if (selectedPokemon === '') {
-        resultContainer.innerHTML = 'No se ha seleccionado un Pokémon. Intente nuevamente.';
+        resultContainer.innerHTML = 'No Pokemon has been selected. Try again.';
         return;
     }
 
@@ -46,7 +46,7 @@ function searchPokemon() {
         .then(response => response.json())
         .then(response => displayPokemon(response))
         .catch(error => {
-            resultContainer.innerHTML = 'No se ha encontrado el Pokémon. Intente nuevamente.';
+            resultContainer.innerHTML = 'No Pokemon has been selected. Try again.';
         });
 }
 
@@ -90,14 +90,14 @@ function displayPokemon(response) {
     // Muestra la ID del Pokémon
     if (id) {
         const idHeading = document.createElement('h4');
-        idHeading.textContent = 'ID del Pokémon: ' + id;
+        idHeading.textContent = 'ID: ' + id;
         resultContainer.appendChild(idHeading);
     }
 
     // Muestra los tipos del Pokémon
     if (types && types.length > 0) {
         const typesHeading = document.createElement('h4');
-        typesHeading.textContent = 'Tipos del Pokémon: ';
+        typesHeading.textContent = 'Types: ';
 
         const typesList = document.createElement('ul');
         types.forEach(typeInfo => {
@@ -113,7 +113,7 @@ function displayPokemon(response) {
     // Muestra las habilidades del Pokémon
     if (abilities && abilities.length > 0) {
         const abilitiesHeading = document.createElement('h4');
-        abilitiesHeading.textContent = 'Habilidades del Pokémon: ';
+        abilitiesHeading.textContent = 'Abilities: ';
         resultContainer.appendChild(abilitiesHeading);
 
         const abilitiesList = document.createElement('ul');
@@ -129,7 +129,7 @@ function displayPokemon(response) {
     // Muestra las estadísticas del Pokémon
     if (stats && stats.length > 0) {
         const statsHeading = document.createElement('h4');
-        statsHeading.textContent = 'Estadísticas del Pokémon: ';
+        statsHeading.textContent = 'Statistics: ';
         resultContainer.appendChild(statsHeading);
 
         const statsList = document.createElement('ul');
@@ -146,7 +146,7 @@ function displayPokemon(response) {
     if (height) {
         const heightHeading = document.createElement('h4');
         const heightInCm = height * 10; // Conversión de decímetros a centímetros
-        heightHeading.textContent = `Altura del Pokémon: ${heightInCm} cm`;
+        heightHeading.textContent = `Height: ${heightInCm} cm`;
         resultContainer.appendChild(heightHeading);
     }
 
@@ -154,14 +154,14 @@ function displayPokemon(response) {
     if (weight) {
         const weightHeading = document.createElement('h4');
         const weightInKg = weight / 10; // Conversión de hectogramos a kilogramos
-        weightHeading.textContent = `Peso del Pokémon: ${weightInKg} kg`;
+        weightHeading.textContent = `Weight: ${weightInKg} kg`;
         resultContainer.appendChild(weightHeading);
     }
 
     // Muestra los artículos que lleva el Pokémon
     if (heldItems && heldItems.length > 0) {
         const heldItemsHeading = document.createElement('h4');
-        heldItemsHeading.textContent = 'Artículos del Pokémon: ';
+        heldItemsHeading.textContent = 'Articles: ';
         resultContainer.appendChild(heldItemsHeading);
 
         const heldItemsList = document.createElement('ul');
@@ -177,7 +177,7 @@ function displayPokemon(response) {
 
     // Verifica si se agregaron imágenes al contenedor
     if (resultContainer.children.length === 0) {
-        resultContainer.innerHTML = 'No se encontraron imágenes específicas para el Pokémon.';
+        resultContainer.innerHTML = 'No specific images were found for the Pokemon.';
     }
 }
 
